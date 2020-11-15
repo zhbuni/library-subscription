@@ -1,12 +1,16 @@
 import sys
+import datetime
+import os
 
 from PyQt5 import uic
 from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QApplication, QMainWindow,\
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, \
     QTableWidgetItem, QDialog
 
 import sqlite3
-from sqlite3 import Date
+
+from PIL import Image
 
 
 class MyWidget(QMainWindow):
@@ -22,14 +26,57 @@ class MyWidget(QMainWindow):
         self.addAuthorButton.clicked.connect(self.addAuthor)
         self.addVisitorButton.clicked.connect(self.addVisitor)
         self.GiveOutBookButton.clicked.connect(self.giveOutBook)
+        self.filterButton.clicked.connect(self.setFilters)
+        self.tableWidget.itemSelectionChanged.connect(self.bookSelected)
+
+        self.outdated = 0
+        self.givenOut = 0
+
+        self.searchBook()
+
+    def resizeImage(self, image):
+        img = Image.open(image)
+        width = 250
+        height = 365
+        resized_img = img.resize((width, height), Image.ANTIALIAS)
+        resized_img.save(image)
+
+    def bookSelected(self):
+        self.image.clear()
+
+        listOfItems = [el.text() for el in self.tableWidget.selectedItems()]
+        if len(listOfItems) != 8:
+            return
+
+        self.titleLabel.setText(listOfItems[0])
+        self.authorLabel.setText(listOfItems[2] + ' ' + listOfItems[3])
+        self.genreLabel.setText(listOfItems[-1])
+        self.pubLabel.setText(listOfItems[4])
+        self.yearLabel.setText(listOfItems[-2])
+
+        if os.path.exists('Images/{}.jpg'.format(listOfItems[0])):
+            self.resizeImage('Images/{}.jpg'.format(listOfItems[0]))
+
+            self.pixmap = QPixmap('Images/{}.jpg'.format(listOfItems[0]))
+
+            self.image.setPixmap(self.pixmap)
+        else:
+            self.pixmap = QPixmap('Images/standart.jpg')
+            self.image.setPixmap(self.pixmap)
+
+
+    def setFilters(self):
+        self.dialog = FilterDialog(self)
+        self.dialog.show()
 
     def giveOutBook(self):
         self.label.setText('')
-        if len(self.tableWidget.selectedItems()) > 8:
+
+        if len(self.tableWidget.selectedItems()) > 7:
             self.label.setText('Выберите одну книгу.')
             return
-        self.label.setText('')
         id = self.tableWidget.currentRow()
+
         if id == -1:
             self.label.setText('Выберите книгу.')
         else:
@@ -39,63 +86,97 @@ class MyWidget(QMainWindow):
     def searchBook(self):
         txt = self.box.currentText()
         searchText = self.edit.text()
+
         self.label.setText('')
-        result = []
+
         self.tableWidget.clear()
-        if txt == 'Название':
-            result = self.cur.execute("""SELECT * FROM books
-            WHERE title LIKE '%{}'""".format(searchText)).fetchall()
+        if self.outdated:
+            today = datetime.date.today()
+
+            result = self.cur.execute("""
+                SELECT
+                books.title, books.ISBN,
+                author.name, 
+                author.surname, publishing.title,
+                CASE WHEN books.IsAvailable = 1 THEN "Да" ELSE "Нет" END AS "IsAvailable",
+                books.pub_Year, genres.title
+                FROM books
+                INNER JOIN author ON author.id = books.author
+                INNER JOIN publishing ON publishing.id = books.pubHouse
+                INNER JOIN Genres ON Genres.id = books.genre
+                INNER JOIN ListOfBooks ON ListOfBooks.bookid = Books.id
+                WHERE (books.title LIKE '%{}' OR genres.title LIKE '%{}'
+                OR publishing.title LIKE '%{}' OR Books.pub_year LIKE '%{}')
+                AND books.isAvailable = 0
+                AND CASE WHEN '{}' = '1'
+                THEN Date(ListOfBooks.expireDate) < Date('{}')
+                ELSE 1 END
+                """.format(searchText, searchText,
+                           searchText, searchText,
+                           self.outdated, today)).fetchall()
+
+        elif txt == 'Название' or txt == 'Жанр' \
+                or txt == 'Издательство' or txt == 'Год выпуска':
+            result = self.cur.execute("""
+                SELECT
+                books.title, books.ISBN,
+                author.name, 
+                author.surname, publishing.title,
+                CASE WHEN books.IsAvailable = 1 THEN "Да" ELSE "Нет" END AS "IsAvailable",
+                books.pub_Year, genres.title
+                FROM books
+                INNER JOIN author ON author.id = books.author
+                INNER JOIN publishing ON publishing.id = books.pubHouse
+                INNER JOIN Genres ON Genres.id = books.genre
+                WHERE (books.title LIKE '%{}' OR genres.title LIKE '%{}'
+                OR publishing.title LIKE '%{}' OR Books.pub_year LIKE '%{}')
+                AND CASE WHEN '{}' = '1'
+                THEN books.isAvailable = 0 
+                ELSE books.isAvailable = 0 or books.isAvailable = 1 END
+                """.format(searchText, searchText,
+                           searchText, searchText, self.givenOut)).fetchall()
         elif txt == 'Автор':
             name1, surname1 = '', ''
+
             try:
                 name1, surname1 = searchText.split()
             except ValueError:
                 print('Имя введено некорректно')
-            print(name1, surname1)
-            result1 = self.cur.execute("""SELECT id from author 
-            WHERE name LIKE '{}'
-             AND surname LIKE '{}'""".format(name1, surname1)).fetchall()
-            if len(result1) == 1:
-                result1 = result1[0][0]
-            result = self.cur.execute("""SELECT * FROM books
-                        WHERE author = '{}'""".format(result1)).fetchall()
-        elif txt == 'Жанр':
-            result = self.cur.execute("""SELECT * FROM books
-                                    WHERE LOWER(genre) = LOWER('{}')  """.format(searchText)).fetchall()
-        elif txt == 'Издательство':
-            result1 = self.cur.execute("""SELECT id from publishing 
-                        WHERE title = '{}'""".format(searchText)).fetchall()
-            if len(result1) == 1:
-                result1 = result1[0][0]
-            print(result1)
-            result = self.cur.execute("""SELECT * FROM books
-                                    WHERE LOWER(pubhouse) = LOWER('{}')""".format(result1)).fetchall()
-        else:
+
             result = self.cur.execute("""
-            SELECT
-             books.title, books.ISBN, 
-             author.surname, publishing.title, 
-             CASE WHEN books.IsAvailable = 1 THEN "Да" ELSE "Нет" END AS "IsAvailable",
-			 books.pub_Year, books.genre
-            FROM books
-            INNER JOIN author ON author.id = books.author
-            INNER JOIN publishing ON publishing.id = books.pubHouse
-            """).fetchall()
-        self.tableWidget.setColumnCount(7)
-        self.tableWidget.setHorizontalHeaderLabels(['title',  'ISBN',  'Author',  'Publishing',
-                                                    'pubYear',
-                                                    'isAvailable',
-                                                    'Genre',
-                                                    ])
+                SELECT
+                books.title, books.ISBN,
+                author.name, 
+                author.surname, publishing.title,
+                CASE WHEN books.IsAvailable = 1 THEN "Да" ELSE "Нет" END AS "IsAvailable",
+            	books.pub_Year, genres.title
+                FROM books
+                INNER JOIN author ON author.id = books.author
+                INNER JOIN publishing ON publishing.id = books.pubHouse
+                INNER JOIN Genres ON Genres.id = books.genre
+                WHERE 
+                author.surname LIKE '%{}' AND author.name LIKE '%{}'
+                AND CASE WHEN '{}' = '1'
+                THEN books.isAvailable = 0 
+                ELSE books.isAvailable = 0 or books.isAvailable = 1 END
+                        """.format(surname1, name1,
+                                   self.givenOut)).fetchall()
+
+        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setHorizontalHeaderLabels(['Название', 'ISBN', 'Имя', 'Фамилия',
+                                                    'Издательство', 'В наличии',
+                                                    'Год издательства', 'Жанр'])
+
         self.tableWidget.setRowCount(0)
+
         for i, row in enumerate(result):
             self.tableWidget.setRowCount(
                 self.tableWidget.rowCount() + 1)
             for j, elem in enumerate(row):
                 self.tableWidget.setItem(
                     i, j, QTableWidgetItem(str(elem)))
+
         self.tableWidget.resizeColumnsToContents()
-        print(result)
 
     def addBook(self):
         self.dialog = BookAddDialog(self)
@@ -112,91 +193,175 @@ class MyWidget(QMainWindow):
         self.dialog.show()
 
     def closeEvent(self, event):
-        self.con.close()
+        self.con.commit()
+
+
+class FilterDialog(QDialog):
+    def __init__(self, parent=None):
+        super(FilterDialog, self).__init__(parent)
+
+        self.parent = parent
+        self.setModal(True)
+
+        uic.loadUi('filters.ui', self)
+
+        self.givenBox.setCheckState(self.parent.givenOut + 1 if self.parent.givenOut else 0)
+        self.dateBox.setCheckState(self.parent.outdated + 1 if self.parent.outdated else 0)
+
+        self.applyButton.clicked.connect(self.apply)
+
+    def apply(self):
+        self.parent.outdated = self.dateBox.checkState() - 1 \
+            if bool(self.dateBox.checkState()) else 0
+        self.parent.givenOut = self.givenBox.checkState() - 1 \
+            if bool(self.givenBox.checkState()) else 0
+
+        self.parent.searchBook()
+        self.close()
 
 
 class GiveOutBookClass(QDialog):
     def __init__(self, BookId, parent=None):
         super(GiveOutBookClass, self).__init__(parent)
+
         self.parent = parent
         self.book_id = BookId
+
         self.setWindowTitle('Выдать книгу')
         self.setModal(True)
+
         uic.loadUi('giveOut.ui', self)
+
+        lstOfVisitors = self.parent.cur.execute("""
+                SELECT name, surname 
+                FROM Visitor""").fetchall()
+
+        for el in lstOfVisitors:
+            self.comboBox.addItem(el[0] + " " + el[1])
+
         self.addButton.clicked.connect(self.giveOut)
 
     def giveOut(self):
         self.statusLabel.setText('')
-        name = self.nameEdit.text()
-        surname = self.surnameEdit.text()
+        name, surname = self.comboBox.currentText().split()
 
-        date = self.dateEdit.text()
-        if len(date.split('.')) != 3:
-            self.statusLabel.setText('Неверный формат даты')
+        todaysDate = datetime.date.today()
+        selectedDate = self.calendar.selectedDate().toPyDate()
+
+        if selectedDate <= todaysDate:
+            self.statusLabel.setText('Дата некорректна.')
             return
-        else:
-            day, month, year = [el for el in date.split('.')]
-            if not day.isdigit() or not month.isdigit() or not year.isdigit():
-                self.statusLabel.setText('Неверный формат даты')
-                return
 
-        visitor = self.parent.cur.execute("""SELECT id FROM visitor WHERE
-         name LIKE '{}' AND surname
-          LIKE '{}'""".format(name, surname)).fetchall()
+        isAvailable = self.parent.cur.execute("""
+                SELECT isavailable 
+                FROM Books
+                WHERE id = '{}'""".format(self.book_id)).fetchall()[0][0]
 
-        if not name:
-            self.statusLabel.setText('Неккорректное имя.')
-        elif not surname:
-            self.statusLabel.setText('Неккоректная фамилия.')
-        elif not visitor:
-            self.statusLabel.setText('Такого посетителя нет.')
-        else:
-            id = self.parent.cur.execute("""SELECT COUNT(id) FROM ListOfBooks""").fetchall()
-            id = str(id[0][0]) if id else 0
-            print(Date.month)
-            print(self.parent.cur.execute("""SELECT * FROM ListOfBOoks""").fetchall())
+        if isAvailable == 0:
+            self.statusLabel.setText('Книга уже выдана.')
+            return
 
-            self.parent.cur.execute("""INSERT INTO ListOfBooks
-             VALUES ('{}', '{}', '{}')""".format(id, visitor, self.book_id, ))
-            print(self.parent.cur.execute("""SELECT * FROM ListOfBOoks
-            WHERE id = '{}'""".format(id)).fetchall())
+        visitor = self.parent.cur.execute("""
+            SELECT id 
+            FROM visitor 
+            WHERE name LIKE '{}' 
+            AND surname LIKE '{}'""".format(name, surname)).fetchall()[0][0]
+
+        id = self.parent.cur.execute("""
+            SELECT COUNT(id) 
+            FROM ListOfBooks""").fetchall()
+        id = id[0][0] if id else 0
+
+        date = sqlite3.Date.fromisoformat(str(selectedDate))
+
+        self.parent.cur.execute("""
+            INSERT INTO ListOfBooks
+            VALUES ('{}', '{}', '{}', '{}')""".format(id, visitor, self.book_id, date))
+
+        self.parent.cur.execute("""
+            UPDATE Books
+            SET isAvailable = 0
+            WHERE id = '{}'""".format(self.book_id))
+
+        self.parent.label.setText('Книга успешно выдана.')
+
+        self.close()
+
 
 class BookAddDialog(QDialog):
     def __init__(self, parent=None):
+
         super(BookAddDialog, self).__init__(parent)
         self.parent = parent
         self.setModal(True)
+
         uic.loadUi('addDialog.ui', self)
-        self.addButtonDialog.clicked.connect(self.addBook)
+
+        self.addBookButton.clicked.connect(self.addBook)
+
+        lstOfAuthors = self.parent.cur.execute("""
+            SELECT name, surname 
+            FROM Author""").fetchall()
+
+        lstOfGenres = self.parent.cur.execute("""
+            SELECT title 
+            FROM Genres""").fetchall()
+
+        lstOfPublishings = self.parent.cur.execute("""
+            SELECT title 
+            FROM Publishing""").fetchall()
+
+        for el in lstOfAuthors:
+            self.authorEdit.addItem(el[0] + " " + el[1])
+
+        for el in lstOfGenres:
+            self.genreEdit.addItem(el[0])
+
+        for el in lstOfPublishings:
+            self.pubEdit.addItem(el[0])
 
     def addBook(self):
-        name, surname = self.nameEdit.text(), self.surnameEdit.text()
-
         self.statusLabel.setText('')
+        pubHouse = self.pubEdit.currentText()
+        author = self.authorEdit.currentText()
 
-        pubHouse = self.parent.cur.execute("""
-        SELECT id FROM Publishing WHERE title = '{}'""".format(self.pubEdit.text())).fetchall()
-        author = self.parent.cur.execute("""SELECT * FROM Author WHERE 
-        name = '{}' AND surname = '{}'""".format(name, surname)).fetchall()
+        id = self.parent.cur.execute("""
+            SELECT COUNT(id) 
+            FROM books""").fetchall()
+        id = str(id[0][0]) if id else 0
 
-        author = str(author[0][0]) if author else ''
-        pubHouse = str(pubHouse[0][0]) if pubHouse else ''
-        id = self.parent.cur.execute("""SELECT COUNT(id) FROM books""").fetchall()
-        id = str(id[0][0]) if id else ''
         if not self.titleEdit.text():
             self.statusLabel.setText('Некорректное название')
         elif not author:
             self.statusLabel.setText('Такого автора нет')
-        elif not pubHouse:
+        elif pubHouse != 0 and not pubHouse:
             self.statusLabel.setText('Такого издательства нет')
-        elif not self.genreEdit.text():
+        elif not self.genreEdit.currentText():
             self.statusLabel.setText('Неккоректный жанр')
         else:
             title = self.titleEdit.text()
-            genre = self.genreEdit.text()
 
-            pubHouseBooks = self.parent.cur.execute("""SELECT COUNT(id) FROM books
-            WHERE pubHouse = '{}'""".format(str(pubHouse))).fetchall()
+            genre = self.parent.cur.execute("""
+                SELECT id
+                FROM Genres
+                WHERE title = '{}'""".format(self.genreEdit.currentText())).fetchall()[0][0]
+
+            pubHouse = self.parent.cur.execute("""
+                SELECT id
+                FROM publishing
+                WHERE title = '{}'""".format(pubHouse)).fetchall()[0][0]
+
+            name, surname = author.split()
+            author = self.parent.cur.execute("""
+                SELECT id
+                FROM author
+                WHERE name LIKE '{}' 
+                AND surname LIKE '{}'""".format(name, surname)).fetchall()[0][0]
+
+            pubHouseBooks = self.parent.cur.execute("""
+                SELECT COUNT(id) 
+                FROM books
+                WHERE pubHouse = '{}'""".format(str(pubHouse))).fetchall()
 
             pubHouseBooks = pubHouseBooks[0][0] if pubHouseBooks else ''
             pubHouseBooks = str(pubHouseBooks).rjust(3, '0')
@@ -205,57 +370,79 @@ class BookAddDialog(QDialog):
 
             currentYear = str(QDate.currentDate().year())
 
-            self.parent.cur.execute("""INSERT INTO books VALUES ('{}', '{}', 
-            '{}', '{}', '{}', '{}', '{}', '{}')""".format(id, title, ISBN,
+            self.parent.cur.execute("""
+                INSERT INTO books 
+                VALUES ('{}', '{}', '{}', '{}',
+                        '{}', '{}', '{}', '{}')""".format(id, title, ISBN,
                                                           author, pubHouse,
                                                           currentYear, 1, genre))
+
             self.parent.label.setText('Книга успешно добавлена.')
+
             self.close()
 
 
 class AuthorAddDialog(QDialog):
     def __init__(self, parent=None):
         super(AuthorAddDialog, self).__init__(parent)
+
         self.parent = parent
         self.setWindowTitle('Добавить автора')
+
         self.setModal(True)
         uic.loadUi('addAuthor.ui', self)
+
         self.addButton.clicked.connect(self.addAuthor)
 
     def addAuthor(self):
         name = self.nameEdit.text()
         surname = self.surnameEdit.text()
-        print(self.parent.cur.execute("""SELECT * FROM visitor""").fetchall())
 
-        id = self.parent.cur.execute("""SELECT COUNT(id) FROM author""").fetchall()
+        id = self.parent.cur.execute("""
+            SELECT COUNT(id) 
+            FROM author""").fetchall()
         id = str(id[0][0]) if id else ''
-        print(self.parent.is_visitor)
+
         if not self.parent.is_visitor:
-            res = self.parent.cur.execute("""Select * FROM author WHERE name LIKE '{}'
-             AND surname LIKE '{}'""".format(name, surname)).fetchall()
+            res = self.parent.cur.execute("""
+                SELECT * 
+                FROM author 
+                WHERE name LIKE '{}'
+                AND surname LIKE '{}'""".format(name, surname)).fetchall()
         else:
-            res = self.parent.cur.execute("""Select * FROM visitor WHERE name LIKE '{}'
-                         AND surname LIKE '{}'""".format(name, surname)).fetchall()
+            res = self.parent.cur.execute("""
+                SELECT * 
+                FROM visitor 
+                WHERE name LIKE '{}'
+                AND surname LIKE '{}'""".format(name, surname)).fetchall()
+
         if not name:
             self.statusLabel.setText('Неккорректное имя.')
         elif not surname:
             self.statusLabel.setText('Неккоректная фамилия.')
         elif bool(res):
-            print(12312321)
             self.statusLabel.setText('Такое поле уже существует.')
         elif not self.parent.is_visitor:
-            self.parent.cur.execute("""INSERT INTO author
-             values ('{}', '{}', '{}')""".format(id, name, surname))
+            self.parent.cur.execute("""
+                INSERT INTO author
+                VALUES ('{}', '{}', '{}')""".format(id, name, surname))
+
             self.parent.label.setText('Автор успешно добавлен.')
+
             self.close()
         else:
-            id = self.parent.cur.execute("""SELECT COUNT(id) FROM visitor""").fetchall()
+            id = self.parent.cur.execute("""
+                SELECT COUNT(id) 
+                FROM visitor""").fetchall()
             id = str(id[0][0]) if id else ''
 
-            self.parent.cur.execute("""INSERT INTO visitor
-                         values ('{}', '{}', '{}')""".format(id, name, surname))
+            self.parent.cur.execute("""
+                INSERT INTO visitor
+                VALUES ('{}', '{}', '{}')""".format(id, name, surname))
+
             self.parent.label.setText('Посетитель успешно добавлен.')
             self.parent.is_visitor = False
+
             self.close()
 
 
