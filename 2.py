@@ -3,10 +3,10 @@ import datetime
 import os
 
 from PyQt5 import uic
-from PyQt5.QtCore import QDate
+from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QTableWidgetItem, QDialog
+    QTableWidgetItem, QDialog, QTableWidget
 
 import sqlite3
 
@@ -28,11 +28,31 @@ class MyWidget(QMainWindow):
         self.GiveOutBookButton.clicked.connect(self.giveOutBook)
         self.filterButton.clicked.connect(self.setFilters)
         self.tableWidget.itemSelectionChanged.connect(self.bookSelected)
+        self.giveBackButton.clicked.connect(self.giveBack)
+        self.bookDeleteButton.clicked.connect(self.deleteBook)
 
         self.outdated = 0
         self.givenOut = 0
 
+        self.clearTextOfStaticLabels()
         self.searchBook()
+
+    def deleteBook(self):
+        self.label.setText('')
+
+        if len(self.tableWidget.selectedItems()) > 8:
+            self.label.setText('Выберите одну книгу.')
+            return
+        id = self.tableWidget.currentRow()
+        QTableWidget.cur
+        print(id)
+        # self.cur.execute("""
+        #     DELETE
+        #     FROM Books
+        #     WHERE id = {}""".format(id))
+        # print(id)
+        # self.searchBook()
+        # self.label.setText('Книга успешно удалена.')
 
     def resizeImage(self, image):
         img = Image.open(image)
@@ -41,12 +61,33 @@ class MyWidget(QMainWindow):
         resized_img = img.resize((width, height), Image.ANTIALIAS)
         resized_img.save(image)
 
+    def setTextOfStaticLabels(self):
+        self.titleLabel1.setText('Название')
+        self.authorLabel1.setText('Автор')
+        self.genreLabel1.setText('Жанр')
+        self.pubLabel1.setText('Издательство')
+
+    def clearTextOfStaticLabels(self):
+        self.titleLabel1.clear()
+        self.authorLabel1.clear()
+        self.genreLabel1.clear()
+        self.pubLabel1.clear()
+        self.titleLabel.clear()
+        self.authorLabel.clear()
+        self.genreLabel.clear()
+        self.pubLabel.clear()
+        self.yearLabel.clear()
+
     def bookSelected(self):
         self.image.clear()
+
+        self.clearTextOfStaticLabels()
 
         listOfItems = [el.text() for el in self.tableWidget.selectedItems()]
         if len(listOfItems) != 8:
             return
+
+        self.setTextOfStaticLabels()
 
         self.titleLabel.setText(listOfItems[0])
         self.authorLabel.setText(listOfItems[2] + ' ' + listOfItems[3])
@@ -69,10 +110,14 @@ class MyWidget(QMainWindow):
         self.dialog = FilterDialog(self)
         self.dialog.show()
 
+    def giveBack(self):
+        self.dialog = BookReturnDialog(self)
+        self.dialog.show()
+
     def giveOutBook(self):
         self.label.setText('')
 
-        if len(self.tableWidget.selectedItems()) > 7:
+        if len(self.tableWidget.selectedItems()) > 8:
             self.label.setText('Выберите одну книгу.')
             return
         id = self.tableWidget.currentRow()
@@ -90,7 +135,9 @@ class MyWidget(QMainWindow):
         self.label.setText('')
 
         self.tableWidget.clear()
-        if self.outdated:
+        if txt == 'Посетитель':
+            pass
+        elif self.outdated:
             today = datetime.date.today()
 
             result = self.cur.execute("""
@@ -165,7 +212,7 @@ class MyWidget(QMainWindow):
         self.tableWidget.setColumnCount(8)
         self.tableWidget.setHorizontalHeaderLabels(['Название', 'ISBN', 'Имя', 'Фамилия',
                                                     'Издательство', 'В наличии',
-                                                    'Год издательства', 'Жанр'])
+                                                    'Год', 'Жанр'])
 
         self.tableWidget.setRowCount(0)
 
@@ -173,6 +220,7 @@ class MyWidget(QMainWindow):
             self.tableWidget.setRowCount(
                 self.tableWidget.rowCount() + 1)
             for j, elem in enumerate(row):
+                QTableWidgetItem(elem).setFlags(Qt.ItemIsEnabled)
                 self.tableWidget.setItem(
                     i, j, QTableWidgetItem(str(elem)))
 
@@ -192,8 +240,8 @@ class MyWidget(QMainWindow):
         self.dialog = AuthorAddDialog(self)
         self.dialog.show()
 
-    def closeEvent(self, event):
-        self.con.commit()
+    # def closeEvent(self, event):
+    #     self.con.commit()
 
 
 class FilterDialog(QDialog):
@@ -217,6 +265,54 @@ class FilterDialog(QDialog):
             if bool(self.givenBox.checkState()) else 0
 
         self.parent.searchBook()
+        self.close()
+
+
+class BookReturnDialog(QDialog):
+    def __init__(self, parent=None):
+        super(BookReturnDialog, self).__init__(parent)
+
+        self.parent = parent
+
+        self.setWindowTitle('Возврат книги')
+        self.setModal(True)
+
+        uic.loadUi('giveBack.ui', self)
+        self.pushButton.clicked.connect(self.returnBook)
+
+    def returnBook(self):
+        txt = self.lineEdit.text()
+        print(txt)
+
+        self.label.clear()
+        if not txt:
+            self.label.setText('Введите название книги.')
+            return
+        elif not self.parent.cur.execute("""
+                SELECT *
+                FROM Books
+                WHERE title = '{}'""".format(txt)).fetchall():
+            self.label.setText('Такой книги нет.')
+            return
+        elif self.parent.cur.execute("""
+                SELECT isAvailable
+                FROM Books
+                WHERE title = '{}'""".format(txt)).fetchall()[0][0]:
+            self.label.setText("Данная книга не выдана.")
+            return
+        self.parent.cur.execute("""
+            UPDATE Books
+            SET isAvailable = 1
+            WHERE Title = '{}'""".format(txt))
+
+        self.parent.cur.execute("""
+            DELETE FROM ListOfBooks
+            WHERE bookId 
+            IN (SELECT Books.id FROM Books
+            INNER JOIN listOfBooks ON Books.id = listOfBooks.bookId
+            WHERE Books.title = '{}')""".format(txt))
+
+        self.parent.label.setText('Возврат осуществлен.')
         self.close()
 
 
