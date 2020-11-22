@@ -48,11 +48,6 @@
       <string>Автор</string>
      </property>
     </item>
-    <item>
-     <property name="text">
-      <string>Посетитель</string>
-     </property>
-    </item>
    </widget>
    <widget class="QPushButton" name="search">
     <property name="geometry">
@@ -371,17 +366,30 @@
      <string>Возврат</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="bookDeleteButton">
+   <widget class="QPushButton" name="addPubButton">
     <property name="geometry">
      <rect>
       <x>20</x>
+      <y>520</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Добавить издательство</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="addGenreButton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
       <y>520</y>
       <width>161</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Удалить книгу</string>
+     <string>Добавить жанр</string>
     </property>
    </widget>
   </widget>

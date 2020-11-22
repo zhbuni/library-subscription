@@ -6,7 +6,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QTableWidgetItem, QDialog, QTableWidget
+    QTableWidgetItem, QDialog, QFileDialog
 
 import sqlite3
 
@@ -16,7 +16,7 @@ from PIL import Image
 class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('untitled.ui', self)
+        uic.loadUi('UIs/untitled.ui', self)
 
         self.con = sqlite3.connect("library.db")
         self.cur = self.con.cursor()
@@ -29,7 +29,9 @@ class MyWidget(QMainWindow):
         self.filterButton.clicked.connect(self.setFilters)
         self.tableWidget.itemSelectionChanged.connect(self.bookSelected)
         self.giveBackButton.clicked.connect(self.giveBack)
-        self.bookDeleteButton.clicked.connect(self.deleteBook)
+        self.addGenreButton.clicked.connect(self.addGenre)
+        self.addPubButton.clicked.connect(self.addPubHouse)
+
 
         self.outdated = 0
         self.givenOut = 0
@@ -37,22 +39,6 @@ class MyWidget(QMainWindow):
         self.clearTextOfStaticLabels()
         self.searchBook()
 
-    def deleteBook(self):
-        self.label.setText('')
-
-        if len(self.tableWidget.selectedItems()) > 8:
-            self.label.setText('Выберите одну книгу.')
-            return
-        id = self.tableWidget.currentRow()
-        QTableWidget.cur
-        print(id)
-        # self.cur.execute("""
-        #     DELETE
-        #     FROM Books
-        #     WHERE id = {}""".format(id))
-        # print(id)
-        # self.searchBook()
-        # self.label.setText('Книга успешно удалена.')
 
     def resizeImage(self, image):
         img = Image.open(image)
@@ -94,25 +80,20 @@ class MyWidget(QMainWindow):
         self.genreLabel.setText(listOfItems[-1])
         self.pubLabel.setText(listOfItems[4])
         self.yearLabel.setText(listOfItems[-2])
+        fname = self.cur.execute("""
+            SELECT picPath
+            FROM Books
+            WHERE Title = '{}'""".format(listOfItems[0])).fetchall()[0][0]
+        fname = '' if fname is None else fname
+        if os.path.exists(fname):
+            self.resizeImage(fname)
 
-        if os.path.exists('Images/{}.jpg'.format(listOfItems[0])):
-            self.resizeImage('Images/{}.jpg'.format(listOfItems[0]))
-
-            self.pixmap = QPixmap('Images/{}.jpg'.format(listOfItems[0]))
+            self.pixmap = QPixmap(fname)
 
             self.image.setPixmap(self.pixmap)
-        else:
-            self.pixmap = QPixmap('Images/standart.jpg')
+        elif fname == '':
+            self.pixmap = QPixmap('UIs/standart.jpg')
             self.image.setPixmap(self.pixmap)
-
-
-    def setFilters(self):
-        self.dialog = FilterDialog(self)
-        self.dialog.show()
-
-    def giveBack(self):
-        self.dialog = BookReturnDialog(self)
-        self.dialog.show()
 
     def giveOutBook(self):
         self.label.setText('')
@@ -230,6 +211,14 @@ class MyWidget(QMainWindow):
         self.dialog = BookAddDialog(self)
         self.dialog.show()
 
+    def setFilters(self):
+        self.dialog = FilterDialog(self)
+        self.dialog.show()
+
+    def giveBack(self):
+        self.dialog = BookReturnDialog(self)
+        self.dialog.show()
+
     def addAuthor(self):
         self.is_visitor = False
         self.dialog = AuthorAddDialog(self)
@@ -240,8 +229,71 @@ class MyWidget(QMainWindow):
         self.dialog = AuthorAddDialog(self)
         self.dialog.show()
 
-    # def closeEvent(self, event):
-    #     self.con.commit()
+    def addGenre(self):
+        self.isGenre = True
+        self.dialog = AddGenreOrPubHouseClass(self)
+        self.dialog.show()
+
+    def addPubHouse(self):
+        self.isGenre = False
+        self.dialog = AddGenreOrPubHouseClass(self)
+        self.dialog.show()
+
+    def closeEvent(self, event):
+        self.con.commit()
+
+
+class AddGenreOrPubHouseClass(QDialog):
+    def __init__(self, parent=None):
+        super(AddGenreOrPubHouseClass, self).__init__(parent)
+
+        self.parent = parent
+
+        self.setModal(True)
+        uic.loadUi('UIs/addGenre.ui', self)
+
+        if self.parent.isGenre:
+            self.titleLabel.setText("Жанр")
+        else:
+            self.titleLabel.setText("Издательство")
+
+        self.pushButton.clicked.connect(self.add)
+
+    def add(self):
+        txt = self.lineEdit.text()
+        if self.parent.isGenre:
+            self.titleLabel.setText("Жанр")
+            id = self.parent.cur.execute("""
+                SELECT COUNT(id) 
+                FROM genres""").fetchall()
+            id = id[0][0] if id else 0
+
+            if not txt:
+                self.label.setText('Введите жанр.')
+                return
+
+            self.parent.cur.execute("""
+                INSERT INTO Genres (id, title) 
+                VALUES ({}, '{}')""".format(id, txt))
+
+            self.parent.label.setText('Жанр добавлен.')
+        else:
+            self.titleLabel.setText("Издательство")
+            id = self.parent.cur.execute("""
+                            SELECT COUNT(id) 
+                            FROM Publishing""").fetchall()
+            id = id[0][0] if id else 0
+
+            if not txt:
+                self.label.setText('Введите название.')
+                return
+
+            self.parent.cur.execute("""
+                            INSERT INTO Publishing (id, title) 
+                            VALUES ({}, '{}')""".format(id, txt))
+
+            self.parent.label.setText('Издательство добавлено.')
+        self.close()
 
 
 class FilterDialog(QDialog):
@@ -251,7 +303,7 @@ class FilterDialog(QDialog):
         self.parent = parent
         self.setModal(True)
 
-        uic.loadUi('filters.ui', self)
+        uic.loadUi('UIs/filters.ui', self)
 
         self.givenBox.setCheckState(self.parent.givenOut + 1 if self.parent.givenOut else 0)
         self.dateBox.setCheckState(self.parent.outdated + 1 if self.parent.outdated else 0)
@@ -277,7 +329,7 @@ class BookReturnDialog(QDialog):
         self.setWindowTitle('Возврат книги')
         self.setModal(True)
 
-        uic.loadUi('giveBack.ui', self)
+        uic.loadUi('UIs/giveBack.ui', self)
         self.pushButton.clicked.connect(self.returnBook)
 
     def returnBook(self):
@@ -326,7 +378,7 @@ class GiveOutBookClass(QDialog):
         self.setWindowTitle('Выдать книгу')
         self.setModal(True)
 
-        uic.loadUi('giveOut.ui', self)
+        uic.loadUi('UIs/giveOut.ui', self)
 
         lstOfVisitors = self.parent.cur.execute("""
                 SELECT name, surname 
@@ -391,9 +443,12 @@ class BookAddDialog(QDialog):
         self.parent = parent
         self.setModal(True)
 
-        uic.loadUi('addDialog.ui', self)
+        self.fname = ''
+
+        uic.loadUi('UIs/addDialog.ui', self)
 
         self.addBookButton.clicked.connect(self.addBook)
+        self.picButton.clicked.connect(self.picture)
 
         lstOfAuthors = self.parent.cur.execute("""
             SELECT name, surname 
@@ -415,6 +470,9 @@ class BookAddDialog(QDialog):
 
         for el in lstOfPublishings:
             self.pubEdit.addItem(el[0])
+
+    def picture(self):
+        self.fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
 
     def addBook(self):
         self.statusLabel.setText('')
@@ -466,12 +524,14 @@ class BookAddDialog(QDialog):
 
             currentYear = str(QDate.currentDate().year())
 
+            print(self.fname)
             self.parent.cur.execute("""
                 INSERT INTO books 
                 VALUES ('{}', '{}', '{}', '{}',
-                        '{}', '{}', '{}', '{}')""".format(id, title, ISBN,
+                        '{}', '{}', '{}', '{}', '{}')""".format(id, title, ISBN,
                                                           author, pubHouse,
-                                                          currentYear, 1, genre))
+                                                          currentYear, 1,
+                                                          genre, self.fname))
 
             self.parent.label.setText('Книга успешно добавлена.')
 
@@ -486,7 +546,7 @@ class AuthorAddDialog(QDialog):
         self.setWindowTitle('Добавить автора')
 
         self.setModal(True)
-        uic.loadUi('addAuthor.ui', self)
+        uic.loadUi('UIs/addAuthor.ui', self)
 
         self.addButton.clicked.connect(self.addAuthor)
 
