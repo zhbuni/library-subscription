@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
-    <height>292</height>
+    <width>276</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>260</y>
+     <y>300</y>
      <width>251</width>
      <height>20</height>
     </rect>
@@ -31,7 +31,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>101</width>
+     <width>104</width>
      <height>211</height>
     </rect>
    </property>
@@ -93,14 +93,27 @@
   <widget class="QPushButton" name="addBookButton">
    <property name="geometry">
     <rect>
-     <x>14</x>
-     <y>230</y>
+     <x>10</x>
+     <y>270</y>
      <width>251</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>Добавить</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="picButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>251</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Выбрать изображение</string>
    </property>
   </widget>
  </widget>

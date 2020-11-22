@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="180eb04d-9ca6-44ba-80d6-888315650b4c" name="Default Changelist" comment="1">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/library-subscription.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/library-subscription.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="180eb04d-9ca6-44ba-80d6-888315650b4c" name="Default Changelist" comment="Предфинальная версия">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2.py" beforeDir="false" afterPath="$PROJECT_DIR$/2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/Бесы.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Бесы.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/standart.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/standart.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Images/Война и Мир.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Война и Мир.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/Темные аллеи.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Темные аллеи.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filters.ui" beforeDir="false" afterPath="$PROJECT_DIR$/filters.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled.ui" beforeDir="false" afterPath="$PROJECT_DIR$/untitled.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/addAuthor.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/addAuthor.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/addDialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/addDialog.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filters.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/filters.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/giveOut.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/giveOut.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library.db" beforeDir="false" afterPath="$PROJECT_DIR$/library.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/untitled.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/untitled.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,33 +87,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/UIs" />
+      <recent name="$PROJECT_DIR$/Images" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\User\PycharmProjects\library-subscription" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.2">
-    <configuration name="2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="library-subscription" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/usr/bin/python3.8" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.main">
     <configuration name="3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="library-subscription" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -109,6 +110,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="library-subscription" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.8" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -141,7 +164,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.2" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.3" />
       </list>
@@ -172,7 +195,7 @@
       <workItem from="1605512018512" duration="2308000" />
       <workItem from="1605514349790" duration="1285000" />
       <workItem from="1605690247564" duration="503000" />
-      <workItem from="1605962483499" duration="2879000" />
+      <workItem from="1605962483499" duration="7908000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <created>1604917971963</created>
@@ -181,15 +204,34 @@
       <option name="project" value="LOCAL" />
       <updated>1604917971963</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Предфинальная версия">
+      <created>1606025400011</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1606025400011</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="123" />
-    <option name="LAST_COMMIT_MESSAGE" value="123" />
+    <MESSAGE value="Предфинальная версия" />
+    <option name="LAST_COMMIT_MESSAGE" value="Предфинальная версия" />
   </component>
   <component name="WindowStateProjectService">
     <state x="519" y="45" key="#2" timestamp="1604495768425">
@@ -216,26 +258,26 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="425" y="26" width="749" height="807" key="CommitChangelistDialog2/0.0.1600.860@0.0.1600.860" timestamp="1605472423281" />
-    <state width="1802" height="275" key="GridCell.Tab.0.bottom" timestamp="1605965507746">
+    <state width="1802" height="275" key="GridCell.Tab.0.bottom" timestamp="1606031567523">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1605965507746" />
-    <state width="1802" height="275" key="GridCell.Tab.0.center" timestamp="1605965507745">
+    <state width="1802" height="275" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567523" />
+    <state width="1802" height="275" key="GridCell.Tab.0.center" timestamp="1606031567522">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1605965507745" />
-    <state width="1802" height="275" key="GridCell.Tab.0.left" timestamp="1605965507745">
+    <state width="1802" height="275" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
+    <state width="1802" height="275" key="GridCell.Tab.0.left" timestamp="1606031567522">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1605965507745" />
-    <state width="1802" height="275" key="GridCell.Tab.0.right" timestamp="1605965507746">
+    <state width="1802" height="275" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
+    <state width="1802" height="275" key="GridCell.Tab.0.right" timestamp="1606031567522">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1605965507746" />
+    <state width="1802" height="275" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
     <state width="1802" height="340" key="GridCell.Tab.1.bottom" timestamp="1605514325804">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -269,10 +311,11 @@
     </state>
     <state x="301" y="73" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1604495808643" />
     <state x="420" y="116" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1605514425939" />
-    <state x="392" y="164" key="Vcs.Push.Dialog.v2" timestamp="1605472377215">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1606025410133">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="392" y="164" key="Vcs.Push.Dialog.v2/0.0.1600.860@0.0.1600.860" timestamp="1605472377215" />
+    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1606025410133" />
     <state x="609" y="348" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605364863474">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -285,7 +328,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/library_subscription$3.coverage" NAME="3 Coverage Results" MODIFIED="1605015575679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/library_subscription$test.coverage" NAME="test Coverage Results" MODIFIED="1605472014822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/library_subscription1$2.coverage" NAME="2 Coverage Results" MODIFIED="1605965507723" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/library_subscription1$2.coverage" NAME="main Coverage Results" MODIFIED="1606031567504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/library_subscription$2.coverage" NAME="2 Coverage Results" MODIFIED="1605472080866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
