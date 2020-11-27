@@ -6,7 +6,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QTableWidgetItem, QDialog, QFileDialog, QTableWidget
+    QTableWidgetItem, QDialog, QFileDialog
 
 import sqlite3
 
@@ -117,12 +117,14 @@ class MyWidget(QMainWindow):
         isnb = self.tableWidget.model().data(newInd)
 
         fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
-        if self.fname:
+        if fname:
             print(fname)
             self.cur.execute("""
                 UPDATE Books
                 SET picPath = '{}'
                 WHERE ISBN = '{}'""".format(fname, isnb))
+
+            self.bookSelected()
 
     def giveOutBook(self):
         """Создание диалогового окна для выдачи книги"""
