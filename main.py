@@ -6,7 +6,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QTableWidgetItem, QDialog, QFileDialog
+    QTableWidgetItem, QDialog, QFileDialog, QTableWidget
 
 import sqlite3
 
@@ -31,6 +31,7 @@ class MyWidget(QMainWindow):
         self.giveBackButton.clicked.connect(self.giveBack)
         self.addGenreButton.clicked.connect(self.addGenre)
         self.addPubButton.clicked.connect(self.addPubHouse)
+        self.deleteBookButton.clicked.connect(self.deleteBook)
 
 
         self.outdated = 0
@@ -39,19 +40,26 @@ class MyWidget(QMainWindow):
         self.clearTextOfStaticLabels()
         self.searchBook()
 
+    def deleteBook(self):
+        listOfItems = [el.text() for el in self.tableWidget.selectedItems()]
+        if len(listOfItems) != 8:
+            return
+        print(self.tableWidget.currentRow())
+        newInd = self.tableWidget.model().index(self.tableWidget.currentRow(), 1)
+        isnb = self.tableWidget.model().data(newInd)
+        self.cur.execute("""
+            DELETE FROM Books
+            WHERE ISBN = '{}'""".format(isnb))
+        print(1)
+        self.searchBook()
 
     def resizeImage(self, image):
+        """Подгон размера изображения для вывода в PyQt"""
         img = Image.open(image)
         width = 250
         height = 365
         resized_img = img.resize((width, height), Image.ANTIALIAS)
         resized_img.save(image)
-
-    def setTextOfStaticLabels(self):
-        self.titleLabel1.setText('Название')
-        self.authorLabel1.setText('Автор')
-        self.genreLabel1.setText('Жанр')
-        self.pubLabel1.setText('Издательство')
 
     def clearTextOfStaticLabels(self):
         self.titleLabel1.clear()
@@ -65,6 +73,7 @@ class MyWidget(QMainWindow):
         self.yearLabel.clear()
 
     def bookSelected(self):
+        """Вывод информации о книге."""
         self.image.clear()
 
         self.clearTextOfStaticLabels()
@@ -73,13 +82,16 @@ class MyWidget(QMainWindow):
         if len(listOfItems) != 8:
             return
 
-        self.setTextOfStaticLabels()
-
+        self.titleLabel1.setText('Название')
+        self.authorLabel1.setText('Автор')
+        self.genreLabel1.setText('Жанр')
+        self.pubLabel1.setText('Издательство')
         self.titleLabel.setText(listOfItems[0])
         self.authorLabel.setText(listOfItems[2] + ' ' + listOfItems[3])
         self.genreLabel.setText(listOfItems[-1])
         self.pubLabel.setText(listOfItems[4])
         self.yearLabel.setText(listOfItems[-2])
+
         fname = self.cur.execute("""
             SELECT picPath
             FROM Books
@@ -96,6 +108,7 @@ class MyWidget(QMainWindow):
             self.image.setPixmap(self.pixmap)
 
     def giveOutBook(self):
+        """Создание диалогового окна для выдачи книги"""
         self.label.setText('')
 
         if len(self.tableWidget.selectedItems()) > 8:
@@ -110,6 +123,7 @@ class MyWidget(QMainWindow):
             self.dialog.show()
 
     def searchBook(self):
+        """Поиск книги в БД"""
         txt = self.box.currentText()
         searchText = self.edit.text()
 
@@ -208,42 +222,51 @@ class MyWidget(QMainWindow):
         self.tableWidget.resizeColumnsToContents()
 
     def addBook(self):
+        """Вызов диалогово окна для добавления книги"""
         self.dialog = BookAddDialog(self)
         self.dialog.show()
 
     def setFilters(self):
+        """Окно для задания фильтров поиска"""
         self.dialog = FilterDialog(self)
         self.dialog.show()
 
     def giveBack(self):
+        """Создание окна для возврата книги"""
         self.dialog = BookReturnDialog(self)
         self.dialog.show()
 
     def addAuthor(self):
+        """Создание окна для добавления автора"""
         self.is_visitor = False
         self.dialog = AuthorAddDialog(self)
         self.dialog.show()
 
     def addVisitor(self):
+        """Создание окна для добавления посетителя"""
         self.is_visitor = True
         self.dialog = AuthorAddDialog(self)
         self.dialog.show()
 
     def addGenre(self):
+        """Создание окна для добавления жанра"""
         self.isGenre = True
         self.dialog = AddGenreOrPubHouseClass(self)
         self.dialog.show()
 
     def addPubHouse(self):
+        """Создание окна для добавления издательства"""
         self.isGenre = False
         self.dialog = AddGenreOrPubHouseClass(self)
         self.dialog.show()
 
     def closeEvent(self, event):
+        """Метод, вызываемый перед закрытием приложения"""
         self.con.commit()
 
 
 class AddGenreOrPubHouseClass(QDialog):
+    """Класс, создающий окно для добавления жанра или издательства"""
     def __init__(self, parent=None):
         super(AddGenreOrPubHouseClass, self).__init__(parent)
 
@@ -297,6 +320,7 @@ class AddGenreOrPubHouseClass(QDialog):
 
 
 class FilterDialog(QDialog):
+    """Класс, создающий окно для выбора фильтров поиска"""
     def __init__(self, parent=None):
         super(FilterDialog, self).__init__(parent)
 
@@ -321,6 +345,7 @@ class FilterDialog(QDialog):
 
 
 class BookReturnDialog(QDialog):
+    """Класс, создающий окно для возврата книги"""
     def __init__(self, parent=None):
         super(BookReturnDialog, self).__init__(parent)
 
@@ -369,6 +394,7 @@ class BookReturnDialog(QDialog):
 
 
 class GiveOutBookClass(QDialog):
+    """Класс, создающий окно для выдачи книги"""
     def __init__(self, BookId, parent=None):
         super(GiveOutBookClass, self).__init__(parent)
 
@@ -437,6 +463,7 @@ class GiveOutBookClass(QDialog):
 
 
 class BookAddDialog(QDialog):
+    """Класс, создающий окно для добавления книги"""
     def __init__(self, parent=None):
 
         super(BookAddDialog, self).__init__(parent)
@@ -480,9 +507,9 @@ class BookAddDialog(QDialog):
         author = self.authorEdit.currentText()
 
         id = self.parent.cur.execute("""
-            SELECT COUNT(id) 
+            SELECT MAX(id) 
             FROM books""").fetchall()
-        id = str(id[0][0]) if id else 0
+        id = id[0][0] + 1 if id else 0
 
         if not self.titleEdit.text():
             self.statusLabel.setText('Некорректное название')
@@ -534,11 +561,12 @@ class BookAddDialog(QDialog):
                                                           genre, self.fname))
 
             self.parent.label.setText('Книга успешно добавлена.')
-
+            self.parent.searchBook()
             self.close()
 
 
 class AuthorAddDialog(QDialog):
+    """Класс, создающий окно для добавления автора"""
     def __init__(self, parent=None):
         super(AuthorAddDialog, self).__init__(parent)
 

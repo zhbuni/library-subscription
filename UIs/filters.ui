@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Фильтры</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Images/icon.jpg</normaloff>../Images/icon.jpg</iconset>
+  </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>

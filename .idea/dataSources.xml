@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\User\PycharmProjects\library-subscription\library.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="library [2]" uuid="1a89d63a-7100-454d-bdd5-8790dafbc192">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/library.db</jdbc-url>
+    </data-source>
   </component>
 </project>

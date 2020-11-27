@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Выдача книги</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Images/icon.jpg</normaloff>../Images/icon.jpg</iconset>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>

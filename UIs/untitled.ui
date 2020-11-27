@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Абонемент библиотеки</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Images/icon.jpg</normaloff>../Images/icon.jpg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QComboBox" name="box">
     <property name="geometry">
@@ -390,6 +394,19 @@
     </property>
     <property name="text">
      <string>Добавить жанр</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="deleteBookButton">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>520</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Удалить книгу</string>
     </property>
    </widget>
   </widget>
