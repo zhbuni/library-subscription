@@ -32,7 +32,7 @@ class MyWidget(QMainWindow):
         self.addGenreButton.clicked.connect(self.addGenre)
         self.addPubButton.clicked.connect(self.addPubHouse)
         self.deleteBookButton.clicked.connect(self.deleteBook)
-
+        self.picAddButton.clicked.connect(self.addPicture)
 
         self.outdated = 0
         self.givenOut = 0
@@ -44,13 +44,13 @@ class MyWidget(QMainWindow):
         listOfItems = [el.text() for el in self.tableWidget.selectedItems()]
         if len(listOfItems) != 8:
             return
-        print(self.tableWidget.currentRow())
+
         newInd = self.tableWidget.model().index(self.tableWidget.currentRow(), 1)
         isnb = self.tableWidget.model().data(newInd)
         self.cur.execute("""
             DELETE FROM Books
             WHERE ISBN = '{}'""".format(isnb))
-        print(1)
+
         self.searchBook()
 
     def resizeImage(self, image):
@@ -103,9 +103,26 @@ class MyWidget(QMainWindow):
             self.pixmap = QPixmap(fname)
 
             self.image.setPixmap(self.pixmap)
-        elif fname == '':
-            self.pixmap = QPixmap('UIs/standart.jpg')
+        else:
+            self.pixmap = QPixmap('Images/standart.jpg')
             self.image.setPixmap(self.pixmap)
+
+    def addPicture(self):
+        listOfItems = [el.text() for el in self.tableWidget.selectedItems()]
+        if len(listOfItems) != 8:
+            self.label.setText('Выберите одну книгу.')
+            return
+
+        newInd = self.tableWidget.model().index(self.tableWidget.currentRow(), 1)
+        isnb = self.tableWidget.model().data(newInd)
+
+        fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
+        if self.fname:
+            print(fname)
+            self.cur.execute("""
+                UPDATE Books
+                SET picPath = '{}'
+                WHERE ISBN = '{}'""".format(fname, isnb))
 
     def giveOutBook(self):
         """Создание диалогового окна для выдачи книги"""
@@ -267,6 +284,7 @@ class MyWidget(QMainWindow):
 
 class AddGenreOrPubHouseClass(QDialog):
     """Класс, создающий окно для добавления жанра или издательства"""
+
     def __init__(self, parent=None):
         super(AddGenreOrPubHouseClass, self).__init__(parent)
 
@@ -287,18 +305,22 @@ class AddGenreOrPubHouseClass(QDialog):
         if self.parent.isGenre:
             self.titleLabel.setText("Жанр")
             id = self.parent.cur.execute("""
-                SELECT COUNT(id) 
+                SELECT MAX(id) 
                 FROM genres""").fetchall()
-            id = id[0][0] if id else 0
+            id = int(id[0][0]) + 1 if id else 0
 
             if not txt:
                 self.label.setText('Введите жанр.')
                 return
-
+            if self.parent.cur.execute("""
+                    SELECT *
+                    FROM Genres
+                    WHERE title = '{}'""".format(txt)).fetchall():
+                self.label.setText('Такой жанр уже есть.')
+                return
             self.parent.cur.execute("""
                 INSERT INTO Genres (id, title) 
                 VALUES ({}, '{}')""".format(id, txt))
-
             self.parent.label.setText('Жанр добавлен.')
         else:
             self.titleLabel.setText("Издательство")
@@ -321,6 +343,7 @@ class AddGenreOrPubHouseClass(QDialog):
 
 class FilterDialog(QDialog):
     """Класс, создающий окно для выбора фильтров поиска"""
+
     def __init__(self, parent=None):
         super(FilterDialog, self).__init__(parent)
 
@@ -346,6 +369,7 @@ class FilterDialog(QDialog):
 
 class BookReturnDialog(QDialog):
     """Класс, создающий окно для возврата книги"""
+
     def __init__(self, parent=None):
         super(BookReturnDialog, self).__init__(parent)
 
@@ -395,6 +419,7 @@ class BookReturnDialog(QDialog):
 
 class GiveOutBookClass(QDialog):
     """Класс, создающий окно для выдачи книги"""
+
     def __init__(self, BookId, parent=None):
         super(GiveOutBookClass, self).__init__(parent)
 
@@ -464,6 +489,7 @@ class GiveOutBookClass(QDialog):
 
 class BookAddDialog(QDialog):
     """Класс, создающий окно для добавления книги"""
+
     def __init__(self, parent=None):
 
         super(BookAddDialog, self).__init__(parent)
@@ -556,9 +582,9 @@ class BookAddDialog(QDialog):
                 INSERT INTO books 
                 VALUES ('{}', '{}', '{}', '{}',
                         '{}', '{}', '{}', '{}', '{}')""".format(id, title, ISBN,
-                                                          author, pubHouse,
-                                                          currentYear, 1,
-                                                          genre, self.fname))
+                                                                author, pubHouse,
+                                                                currentYear, 1,
+                                                                genre, self.fname))
 
             self.parent.label.setText('Книга успешно добавлена.')
             self.parent.searchBook()
@@ -567,6 +593,7 @@ class BookAddDialog(QDialog):
 
 class AuthorAddDialog(QDialog):
     """Класс, создающий окно для добавления автора"""
+
     def __init__(self, parent=None):
         super(AuthorAddDialog, self).__init__(parent)
 
