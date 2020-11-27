@@ -19,42 +19,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="180eb04d-9ca6-44ba-80d6-888315650b4c" name="Default Changelist" comment="Предфинальная версия">
+    <list default="true" id="180eb04d-9ca6-44ba-80d6-888315650b4c" name="Default Changelist" comment="mb final">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/standart.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/standart.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Images/Война и Мир.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Война и Мир.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addAuthor.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/addAuthor.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addDialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/addDialog.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filters.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/filters.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/giveOut.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/giveOut.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIs/untitled.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/untitled.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library.db" beforeDir="false" afterPath="$PROJECT_DIR$/library.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/untitled.ui" beforeDir="false" afterPath="$PROJECT_DIR$/UIs/untitled.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="library" type="feb32156:DbDataSourceImpl" />
-      </path>
-    </expand>
-    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -65,7 +42,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="JupyterTrust" id="c1b9fc75-f603-485a-8dd1-abbffb047c22" />
   <component name="ProjectId" id="1jp6JwahNFBJu9fuOvJPi15rheM" />
@@ -195,7 +172,8 @@
       <workItem from="1605512018512" duration="2308000" />
       <workItem from="1605514349790" duration="1285000" />
       <workItem from="1605690247564" duration="503000" />
-      <workItem from="1605962483499" duration="7908000" />
+      <workItem from="1605962483499" duration="13154000" />
+      <workItem from="1606128745303" duration="1181000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <created>1604917971963</created>
@@ -211,7 +189,21 @@
       <option name="project" value="LOCAL" />
       <updated>1606025400011</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Финальная версия">
+      <created>1606032205988</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1606032205988</updated>
+    </task>
+    <task id="LOCAL-00004" summary="mb final">
+      <created>1606126256205</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1606126256205</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,11 +219,14 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="123" />
     <MESSAGE value="Предфинальная версия" />
-    <option name="LAST_COMMIT_MESSAGE" value="Предфинальная версия" />
+    <MESSAGE value="Финальная версия" />
+    <MESSAGE value="mb final" />
+    <option name="LAST_COMMIT_MESSAGE" value="mb final" />
   </component>
   <component name="WindowStateProjectService">
     <state x="519" y="45" key="#2" timestamp="1604495768425">
@@ -242,10 +237,11 @@
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="625" y="235" width="732" height="644" key="#Inspections/72.27.1848.1053@72.27.1848.1053" timestamp="1605514397893" />
-    <state x="392" y="89" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604915571034">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state x="525" y="136" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606125541453">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="392" y="89" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1600.860@0.0.1600.860" timestamp="1604915571034" />
+    <state x="525" y="136" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1606125541453" />
     <state x="515" y="234" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605471200353">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -258,26 +254,30 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="425" y="26" width="749" height="807" key="CommitChangelistDialog2/0.0.1600.860@0.0.1600.860" timestamp="1605472423281" />
-    <state width="1802" height="275" key="GridCell.Tab.0.bottom" timestamp="1606031567523">
+    <state x="172" y="127" width="1648" height="853" key="DiffContextDialog" timestamp="1606126565623">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="172" y="127" width="1648" height="853" key="DiffContextDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1606126565623" />
+    <state width="1802" height="146" key="GridCell.Tab.0.bottom" timestamp="1606128549199">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567523" />
-    <state width="1802" height="275" key="GridCell.Tab.0.center" timestamp="1606031567522">
+    <state width="1802" height="146" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1606128549199" />
+    <state width="1802" height="146" key="GridCell.Tab.0.center" timestamp="1606128549196">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
-    <state width="1802" height="275" key="GridCell.Tab.0.left" timestamp="1606031567522">
+    <state width="1802" height="146" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1606128549196" />
+    <state width="1802" height="146" key="GridCell.Tab.0.left" timestamp="1606128549196">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
-    <state width="1802" height="275" key="GridCell.Tab.0.right" timestamp="1606031567522">
+    <state width="1802" height="146" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1606128549196" />
+    <state width="1802" height="146" key="GridCell.Tab.0.right" timestamp="1606128549198">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="1557" height="255" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1605472080876" />
-    <state width="1802" height="275" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1606031567522" />
+    <state width="1802" height="146" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1606128549198" />
     <state width="1802" height="340" key="GridCell.Tab.1.bottom" timestamp="1605514325804">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
@@ -298,10 +298,11 @@
     </state>
     <state width="1557" height="275" key="GridCell.Tab.1.right/0.0.1600.860@0.0.1600.860" timestamp="1605471997110" />
     <state width="1802" height="340" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1605514325804" />
-    <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1604915557909">
-      <screen x="0" y="0" width="1600" height="860" />
+    <state width="263" height="560" key="HiddenNamespacesPopup" timestamp="1606125525049">
+      <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1600.860@0.0.1600.860" timestamp="1604915557909" />
+    <state width="263" height="560" key="HiddenNamespacesPopup/72.27.1848.1053@72.27.1848.1053" timestamp="1606125525049" />
     <state x="512" y="147" key="MultipleFileMergeDialog" timestamp="1605357824057">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -311,11 +312,11 @@
     </state>
     <state x="301" y="73" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1604495808643" />
     <state x="420" y="116" width="1022" height="737" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1605514425939" />
-    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1606025410133">
+    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1606032214460">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="392" y="164" key="Vcs.Push.Dialog.v2/0.0.1600.860@0.0.1600.860" timestamp="1605472377215" />
-    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1606025410133" />
+    <state x="525" y="228" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1606032214460" />
     <state x="609" y="348" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605364863474">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
@@ -327,8 +328,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/library_subscription$3.coverage" NAME="3 Coverage Results" MODIFIED="1605015575679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/library_subscription1$test.coverage" NAME="test Coverage Results" MODIFIED="1606125247592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/library_subscription$test.coverage" NAME="test Coverage Results" MODIFIED="1605472014822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/library_subscription1$2.coverage" NAME="main Coverage Results" MODIFIED="1606031567504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/library_subscription1$2.coverage" NAME="main Coverage Results" MODIFIED="1606127150249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/library_subscription$2.coverage" NAME="2 Coverage Results" MODIFIED="1605472080866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
