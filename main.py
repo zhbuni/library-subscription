@@ -568,11 +568,11 @@ class BookAddDialog(QDialog):
                 AND surname LIKE '{}'""".format(name, surname)).fetchall()[0][0]
 
             pubHouseBooks = self.parent.cur.execute("""
-                SELECT COUNT(id) 
+                SELECT MAX(id) 
                 FROM books
                 WHERE pubHouse = '{}'""".format(str(pubHouse))).fetchall()
 
-            pubHouseBooks = pubHouseBooks[0][0] if pubHouseBooks else ''
+            pubHouseBooks = int(pubHouseBooks[0][0]) + 1 if pubHouseBooks else ''
             pubHouseBooks = str(pubHouseBooks).rjust(3, '0')
 
             ISBN = '978-5-' + str(pubHouse) + '-' + pubHouseBooks
